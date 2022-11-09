@@ -4,10 +4,23 @@ include 'inc/header.php';
 ?>
     <div class="row d-flex justify-content-center">
         <div class="col-md-8 mt-5">
-            <h3 class="text-center pb-2">Welcome to your dashboard</h3>
+            <h3 class="text-center pb-2">Welcome to your dashboard <?=$username?></h3>
             <div class="card">
                 <div class="card-body">
-
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Active</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">Logout</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
