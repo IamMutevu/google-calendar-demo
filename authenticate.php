@@ -20,7 +20,8 @@ else {
         // $apiObject->storeAccessToken($user_id, $access_token);
     }
 
-    echo $apiObject->addEvent($access_token);
+    // echo $apiObject->addEvent($access_token);
+    header('Location: login.php?success=Event created successfully');
 
 
     // $formatted = json_encode($access_token);

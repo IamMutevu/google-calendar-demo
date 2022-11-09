@@ -7,20 +7,48 @@ include 'inc/header.php';
             <h3 class="text-center pb-2">Welcome to your dashboard <?=$username?></h3>
             <div class="card">
                 <div class="card-body">
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Active</a>
+                    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Events</button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-profile-tab" data-toggle="pill" data-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">New Event</button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">Logout</a>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-contact-tab" data-toggle="pill" data-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Settings</button>
                         </li>
                     </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <?
+                                include 'events.php';
+                            ?>
+                        </div>
+                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <?
+                                include 'new_event.php';
+                            ?>
+                        </div>
+                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                            <div class="card-body">
+                                <p class="lead">
+                                    To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
+                                </p>
+                                
+                                <?
+                                    if (isset($_GET['access_token'])){
+                                ?>
+                                    <p>
+                                    <strong>ACCESS TOKEN: </strong><?=$_GET['access_token']?>
+                                    </p>
+                                <?
+                                    }
+                                ?>
+
+                                <a href="authenticate.php?u_id="<?=$username?> class="btn btn-primary btn-block">Integrate</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
