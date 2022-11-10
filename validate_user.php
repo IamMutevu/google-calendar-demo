@@ -15,11 +15,11 @@ try {
 
     // echo json_encode($user);
     if($user){
-        if($user->password == $password){
+        if(password_verify($password, $user->password)){
             $_SESSION['user_id'] = $user->id;
             $_SESSION['name'] = $user->name;
 
-            header('Location: dashboard.php?success=Login successful');
+            header('Location: dashboard.php');
         }
         else{
             header('Location: login.php?error=Wrong password');
