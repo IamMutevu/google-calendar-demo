@@ -1,6 +1,20 @@
 <?php
 include 'session_head.php';
 include 'inc/header.php';
+include 'classes/DatabaseConnection.php';
+
+$connection = DatabaseConnection::connect();
+$query = $connection->prepare("SELECT user_access_tokens.access_token FROM user_access_tokens WHERE user_id = ?");
+$query->execute(array($user_id));
+$access_token_record = $query->fetch(PDO::FETCH_OBJ);
+// if($access_token_record){
+//     echo json_encode($access_token_record->access_token);
+// }
+
+$access_token = json_decode($access_token_record->access_token);
+// echo $access_token->refresh_token;
+
+
 ?>
     <div class="row d-flex justify-content-center">
         <div class="col-md-8 mt-5">
@@ -15,7 +29,7 @@ include 'inc/header.php';
                             <button class="nav-link" id="pills-profile-tab" data-toggle="pill" data-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">New Event</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-contact-tab" data-toggle="pill" data-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Settings</button>
+                            <button class="nav-link" id="pills-contact-tab" data-toggle="pill" data-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Integration</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
@@ -31,24 +45,41 @@ include 'inc/header.php';
                         </div>
                         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                             <div class="card-body">
-                                <p class="lead">
-                                    To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
-                                </p>
-                                
                                 <?
-                                    if (isset($_GET['access_token'])){
+                                    if(!$access_token_record){
                                 ?>
-                                    <p>
-                                    <strong>ACCESS TOKEN: </strong><?=$_GET['access_token']?>
+                                    <p class="lead">
+                                        To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
+                                    </p>
+                                    
+                                    <?
+                                        if (isset($_GET['access_token'])){
+                                    ?>
+                                        <p>
+                                        <strong>ACCESS TOKEN: </strong><?=$_GET['access_token']?>
+                                        </p>
+                                    <?
+                                        }
+                                    ?>
+
+                                    <a href="authenticate.php?" class="btn btn-primary btn-block">Integrate</a>
+                                <?
+                                    }
+                                    else{
+                                ?>     
+                                    <p class="lead">
+                                        Your Gmail account is already integrated
+                                        <a href="#" class="btn btn-primary btn-block mt-4">Remove integration</a>
                                     </p>
                                 <?
                                     }
                                 ?>
-
-                                <a href="authenticate.php?u_id="<?=$username?> class="btn btn-primary btn-block">Integrate</a>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a class="btn btn-outline-secondary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
