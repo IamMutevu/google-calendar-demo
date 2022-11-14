@@ -122,7 +122,6 @@ class GoogleCloudApi{
 
         $access_token = $client->refreshToken($refresh_token);
 
-        // echo json_encode($access_token);
         $client->setAccessToken($access_token);
 
         $service = new Google\Service\Calendar($client);
@@ -190,8 +189,11 @@ class GoogleCloudApi{
 
     }
 
-    public function getEvents($access_token){
-        $client = $this->setupClient();
+    public function getEvents($refresh_token){
+        $client = $this->setupClientConfigured();
+
+        $access_token = $client->refreshToken($refresh_token);
+
         $client->setAccessToken($access_token);
 
         $service = new Google\Service\Calendar($client);
