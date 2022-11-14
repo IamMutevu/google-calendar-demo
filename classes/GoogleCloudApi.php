@@ -4,6 +4,8 @@ include_once __DIR__ . '/../vendor/autoload.php';
 include_once 'DatabaseConnection.php';
 define("PATH", "/google-cloud");
 
+use Carbon\Carbon;
+
 class GoogleCloudApi{
     public function getAuthUrl(){
         $client = $this->setupClient();
@@ -126,33 +128,36 @@ class GoogleCloudApi{
 
         $service = new Google\Service\Calendar($client);
 
-        $event = new Google_Service_Calendar_Event(array(
-            'summary' => 'Test Event Demo',
-            'location' => 'Property Agents Network Office',
-            'description' => 'A chance to hear more about Google\'s developer products.',
-            'start' => array(
-                'dateTime' => '2022-11-15T09:00:00-07:00',
-                'timeZone' => 'America/Los_Angeles',
-            ),
-            'end' => array(
-                'dateTime' => '2022-11-16T17:00:00-07:00',
-                'timeZone' => 'America/Los_Angeles',
-            ),
-            'recurrence' => array(
-                'RRULE:FREQ=DAILY;COUNT=2'
-            ),
-            'attendees' => array(
-                array('email' => 'lpage@example.com'),
-                array('email' => 'sbrin@example.com'),
-            ),
-            'reminders' => array(
-                'useDefault' => FALSE,
-                'overrides' => array(
-                    array('method' => 'email', 'minutes' => 24 * 60),
-                    array('method' => 'popup', 'minutes' => 10),
-                ),
-            ),
-        ));
+        // {"title":"Test","location":"PAN Office","description":"Test","start_date":"2022-11-14T17:38","stop_date":"2022-11-14T19:38"}
+        
+        // $event = new Google_Service_Calendar_Event(array(
+        //     'summary' => 'Test Event Demo',
+        //     'location' => 'Property Agents Network Office',
+        //     'description' => 'A chance to hear more about Google\'s developer products.',
+        //     'start' => array(
+        //         'dateTime' => '2022-11-15T09:00:00-07:00',
+        //         'timeZone' => 'America/Los_Angeles',
+        //     ),
+        //     'end' => array(
+        //         'dateTime' => '2022-11-16T17:00:00-07:00',
+        //         'timeZone' => 'America/Los_Angeles',
+        //     ),
+        //     'recurrence' => array(
+        //         'RRULE:FREQ=DAILY;COUNT=2'
+        //     ),
+        //     'attendees' => array(
+        //         array('email' => 'lpage@example.com'),
+        //         array('email' => 'sbrin@example.com'),
+        //     ),
+        //     'reminders' => array(
+        //         'useDefault' => FALSE,
+        //         'overrides' => array(
+        //             array('method' => 'email', 'minutes' => 24 * 60),
+        //             array('method' => 'popup', 'minutes' => 10),
+        //         ),
+        //     ),
+        // ));
+
         // $events = $service->events->listEvents('primary');
         // echo json_encode($events);
 

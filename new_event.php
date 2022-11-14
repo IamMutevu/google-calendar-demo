@@ -26,5 +26,31 @@
       <input type="datetime-local" class="form-control" name="stop_date" required>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary btn-block">Create Event</button>
+  
+  <?
+    if(!$access_token_record){
+    ?>
+    <p class="lead">
+    To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
+    </p>
+
+    <?
+    if (isset($_GET['access_token'])){
+    ?>
+    <p>
+    <strong>ACCESS TOKEN: </strong><?=$_GET['access_token']?>
+    </p>
+    <?
+    }
+    ?>
+
+    <a href="authenticate.php?" class="btn btn-primary btn-block">Integrate</a>
+    <?
+    }
+    else{
+    ?>     
+    <button type="submit" class="btn btn-primary btn-block">Create Event</button>
+    <?
+    }
+    ?>
 </form>
