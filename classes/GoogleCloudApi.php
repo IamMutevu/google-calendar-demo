@@ -128,8 +128,8 @@ class GoogleCloudApi{
 
 
         try {
-            $start_date = Carbon::createFromFormat('Y-m-d H:i', date('Y-m-d H:i', strtotime($event_details['start_date'])))->format(DateTime::ISO8601);
-            $stop_date = Carbon::createFromFormat('Y-m-d H:i', date('Y-m-d H:i', strtotime($event_details['stop_date'])))->format(DateTime::ISO8601);
+            $start_date = Carbon::createFromFormat('Y-m-d H:i', date('Y-m-d H:i', strtotime($event_details['start_date'])))->subHours('2')->format(DateTime::ISO8601);
+            $stop_date = Carbon::createFromFormat('Y-m-d H:i', date('Y-m-d H:i', strtotime($event_details['stop_date'])))->subHours('2')->format(DateTime::ISO8601);
     
             $event = new Google_Service_Calendar_Event(array(
                 'summary' => $event_details['title'],
@@ -160,7 +160,8 @@ class GoogleCloudApi{
             
             header('Location: dashboard.php?success=Event created successfully');
         } catch (\Throwable $th) {
-            header('Location: dashboard.php?error=An error occurred');
+            // header('Location: dashboard.php?error=An error occurred');
+            echo json_encode($th);
         }
 
     }
