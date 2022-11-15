@@ -26,6 +26,10 @@
       <input type="datetime-local" class="form-control" name="stop_date" required>
     </div>
   </div>
+  <div class="form-group">
+    <label for="attendee">Attendee</label>
+    <input type="email" class="form-control" name="attendee" placeholder="johndoe@email.com">
+  </div>
   
   <?
     if(!$access_token_record){

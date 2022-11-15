@@ -11,8 +11,9 @@ $event_details = array(
     'description' => $_POST['description'],
     'start_date' => $_POST['start_date'],
     'stop_date' => $_POST['stop_date'],
+    'attendee' => $_POST['attendee'],
 );
 
 $apiObject = new GoogleCloudApi();
-echo $apiObject->addEvent($_POST['access_token'], $event_details);
+$apiObject->addEvent($_POST['access_token'], $event_details);
 

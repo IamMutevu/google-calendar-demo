@@ -121,76 +121,47 @@ class GoogleCloudApi{
 
     public function addEvent($refresh_token, $event_details){
         $client = $this->setupClientConfigured();
-
         $access_token = $client->refreshToken($refresh_token);
 
         $client->setAccessToken($access_token);
-
         $service = new Google\Service\Calendar($client);
 
-        // {"title":"Test","location":"PAN Office","description":"Test","start_date":"2022-11-14T17:38","stop_date":"2022-11-14T19:38"}
-        
-        // $event = new Google_Service_Calendar_Event(array(
-        //     'summary' => 'Test Event Demo',
-        //     'location' => 'Property Agents Network Office',
-        //     'description' => 'A chance to hear more about Google\'s developer products.',
-        //     'start' => array(
-        //         'dateTime' => '2022-11-15T09:00:00-07:00',
-        //         'timeZone' => 'America/Los_Angeles',
-        //     ),
-        //     'end' => array(
-        //         'dateTime' => '2022-11-16T17:00:00-07:00',
-        //         'timeZone' => 'America/Los_Angeles',
-        //     ),
-        //     'recurrence' => array(
-        //         'RRULE:FREQ=DAILY;COUNT=2'
-        //     ),
-        //     'attendees' => array(
-        //         array('email' => 'lpage@example.com'),
-        //         array('email' => 'sbrin@example.com'),
-        //     ),
-        //     'reminders' => array(
-        //         'useDefault' => FALSE,
-        //         'overrides' => array(
-        //             array('method' => 'email', 'minutes' => 24 * 60),
-        //             array('method' => 'popup', 'minutes' => 10),
-        //         ),
-        //     ),
-        // ));
 
-        // $events = $service->events->listEvents('primary');
-        // echo json_encode($events);
-
-        // $event = new Google_Service_Calendar_Event(array(
-        //     'summary' => $event_details['title'],
-        //     'location' => $event_details['location'],
-        //     'description' => $event_details['description'],
-        //     'start' => array(
-        //         'dateTime' => $event_details['start_date'],
-        //         'timeZone' => 'Africa/Nairobi',
-        //     ),
-        //     'end' => array(
-        //         'dateTime' => $event_details['stop_date'],
-        //         'timeZone' => 'Africa/Nairobi',
-        //     ),
-        //     'recurrence' => array(
-        //         'RRULE:FREQ=DAILY;COUNT=2'
-        //     ),
-        //     'attendees' => array(
-        //         array('email' => 'ianmutevu96@gmail.com'),
-        //     ),
-        //     'reminders' => array(
-        //         'useDefault' => FALSE,
-        //         'overrides' => array(
-        //             array('method' => 'email', 'minutes' => 24 * 60),
-        //             array('method' => 'popup', 'minutes' => 10),
-        //         ),
-        //     ),
-        // ));
-
-        $calendarId = 'primary';
-        $event = $service->events->insert($calendarId, $event);
-        printf('Event created: %s\n', $event->htmlLink);
+        try {
+            $start_date = Carbon::createFromFormat('Y-m-d H:i', date('Y-m-d H:i', strtotime($event_details['start_date'])))->format(DateTime::ISO8601);
+            $stop_date = Carbon::createFromFormat('Y-m-d H:i', date('Y-m-d H:i', strtotime($event_details['stop_date'])))->format(DateTime::ISO8601);
+    
+            $event = new Google_Service_Calendar_Event(array(
+                'summary' => $event_details['title'],
+                'location' => $event_details['location'],
+                'description' => $event_details['description'],
+                'start' => array(
+                    'dateTime' => $start_date,
+                    'timeZone' => 'Africa/Nairobi',
+                ),
+                'end' => array(
+                    'dateTime' => $stop_date,
+                    'timeZone' => 'Africa/Nairobi',
+                ),
+                'attendees' => array(
+                    array('email' => $event_details['attendee'],
+                ),
+                'reminders' => array(
+                    'useDefault' => FALSE,
+                    'overrides' => array(
+                        array('method' => 'email', 'minutes' => 24 * 60),
+                        array('method' => 'popup', 'minutes' => 10),
+                    ),
+                ),
+            )));
+    
+            $calendarId = 'primary';
+            $event = $service->events->insert($calendarId, $event);
+            
+            header('Location: dashboard.php?success=Event created successfully');
+        } catch (\Throwable $th) {
+            header('Location: dashboard.php?error=An error occurred');
+        }
 
     }
 
@@ -204,6 +175,9 @@ class GoogleCloudApi{
         $service = new Google\Service\Calendar($client);
 
         $events = $service->events->listEvents('primary');
+        // $events_array = (array)$events;
+        // $sorted_events = ksort($events_array);
+        // return json_decode(json_encode($sorted_events));
         return $events;
     }
 
