@@ -3,24 +3,21 @@ include 'inc/header.php';
 ?>
   <body>
     <div class="row d-flex justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card mt-5">
-                <div class="card-body">
-                    <p class="lead">
-                        To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
+                <div class="card-body text-center">
+                    <h3 class="pb-3">
+                        Welcome to this demo app.
+                    </h3>
+                    <p>
+                      This app demonstrates how the Google API can be used to interact with <strong>Google Calendar</strong> 
+                      . While the focus of the app is <strong>Google Calendar</strong>, how the app handles authentication
+                      helps in understanding how one can use other services using the same authentication.
                     </p>
-                    
-                      <?
-                        if (isset($_GET['access_token'])){
-                      ?>
-                        <p>
-                          <strong>ACCESS TOKEN: </strong><?=$_GET['access_token']?>
-                        </p>
-                      <?
-                        }
-                      ?>
-
-                    <a href="authenticate.php?u_id=264" class="btn btn-primary btn-block">Authenticate</a>
+                    <p>
+                      This app allows you to view all the events in your Google Calendar and add a new event. 
+                    </p>
+                    <a href="login.php?" class="btn btn-primary btn-block">Go to app</a>
                 </div>
             </div>
         </div>
