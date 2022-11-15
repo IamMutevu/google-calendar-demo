@@ -61,6 +61,19 @@ class GoogleCloudApi{
         return $query->fetch(PDO::FETCH_OBJ);
     }
 
+    public function deleteStoredAccessToken($user_id, $refresh_token){
+        $client = $this->setupClientConfigured();
+        $access_token = $client->refreshToken($refresh_token);
+
+        $client->setAccessToken($access_token);
+        $client->revokeToken();
+
+        $connection = DatabaseConnection::connect();
+        $query = $connection->prepare("DELETE FROM user_access_tokens WHERE user_id = ?");
+        $query->execute(array($user_id));
+        $connection = null;
+    }
+
     public function test($access_token){
         $client = $this->setupClient();
         $client->setAccessToken($access_token);
@@ -160,8 +173,7 @@ class GoogleCloudApi{
             
             header('Location: dashboard.php?success=Event created successfully');
         } catch (\Throwable $th) {
-            // header('Location: dashboard.php?error=An error occurred');
-            echo json_encode($th);
+            header('Location: dashboard.php?error=An error occurred');
         }
 
     }

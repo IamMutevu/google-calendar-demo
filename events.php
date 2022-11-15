@@ -1,6 +1,7 @@
 <?php
 include 'classes/GoogleCloudApi.php';
 
+if($access_token){
 $apiObject = new GoogleCloudApi();
 $events = $apiObject->getEvents($access_token->refresh_token);
 
@@ -25,6 +26,15 @@ foreach($events as $event){
   </div>
 </div>
 
+<?
+}
+}
+else{
+?>
+<p class="lead">
+    To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
+</p>
+<a href="authenticate.php?" class="btn btn-primary btn-block">Integrate</a>
 <?
 }
 ?>

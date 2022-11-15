@@ -7,12 +7,17 @@ $connection = DatabaseConnection::connect();
 $query = $connection->prepare("SELECT user_access_tokens.access_token FROM user_access_tokens WHERE user_id = ?");
 $query->execute(array($user_id));
 $access_token_record = $query->fetch(PDO::FETCH_OBJ);
-// if($access_token_record){
-//     echo json_encode($access_token_record->access_token);
-// }
 
-$access_token = json_decode($access_token_record->access_token);
-// echo $access_token->refresh_token;
+$access_token = null;
+
+if($access_token_record){
+    // echo json_encode($access_token_record->access_token);
+
+    $access_token = json_decode($access_token_record->access_token);
+    // echo $access_token->refresh_token;   
+}
+
+
 
 
 ?>
@@ -51,17 +56,6 @@ $access_token = json_decode($access_token_record->access_token);
                                     <p class="lead">
                                         To allow this app to integrate with your Google Calendar, you need to log in using your Gmail account
                                     </p>
-                                    
-                                    <?
-                                        if (isset($_GET['access_token'])){
-                                    ?>
-                                        <p>
-                                        <strong>ACCESS TOKEN: </strong><?=$_GET['access_token']?>
-                                        </p>
-                                    <?
-                                        }
-                                    ?>
-
                                     <a href="authenticate.php?" class="btn btn-primary btn-block">Integrate</a>
                                 <?
                                     }
@@ -69,7 +63,7 @@ $access_token = json_decode($access_token_record->access_token);
                                 ?>     
                                     <p class="lead">
                                         Your Gmail account is already integrated
-                                        <a href="#" class="btn btn-primary btn-block mt-4">Remove integration</a>
+                                        <a href="revoke_token.php?u_id=<?=$user_id?>&r_tkn=<?=$access_token->refresh_token?>" class="btn btn-primary btn-block mt-4">Remove integration</a>
                                     </p>
                                 <?
                                     }

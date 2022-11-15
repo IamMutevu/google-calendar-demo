@@ -3,7 +3,6 @@ include 'session_head.php';
 include 'classes/GoogleCloudApi.php';
 
 $apiObject = new GoogleCloudApi();
-// $user_id = "264";
 
 if (! isset($_GET['code'])) {
     $auth_url = $apiObject->getAuthUrl();
@@ -19,8 +18,7 @@ else {
         $access_token = $apiObject->getAccessToken($_GET['code']);
         $apiObject->storeAccessToken($user_id, $access_token, $_GET['code']);
 
-        echo json_encode($access_token, JSON_PRETTY_PRINT) ."<br>";
-        echo gettype($access_token) ."<br>";
+        header('Location: dashboard.php?success=Authenticated successfully');
     }
 
     // echo $apiObject->addEventBackup($access_token);
